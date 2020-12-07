@@ -1,4 +1,4 @@
-#FROM [ORG/IMAGE:TAG]
+FROM dpage/pgadmin4:4.25
 # TO add bash to a minimal image:
 #FROM vault:1.1.1 as base
 #FROM alpine:3.10
@@ -17,11 +17,10 @@
 #RUN mkdir -p ${PERSISTANT_DIR} && touch ${PERSISTANT_DIR}/migrations.log && ln -s ${PERSISTANT_DIR}/migrations.log /var/lib/dogfish/migrations.log 
 
 #
-### Set up the CMD as well as the pre and post hooks.
-#COPY go-init /bin/go-init
-#COPY entrypoint.sh /usr/bin/entrypoint.sh
-#COPY exitpoint.sh /usr/bin/exitpoint.sh
-#
-#ENTRYPOINT ["go-init"]
-#CMD ["-main", "/usr/bin/entrypoint.sh", "-post", "/usr/bin/exitpoint.sh"]
-#
+## Set up the CMD as well as the pre and post hooks.
+COPY go-init /bin/go-init
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+COPY exitpoint.sh /usr/bin/exitpoint.sh
+
+ENTRYPOINT ["go-init"]
+CMD ["-main", "/usr/bin/entrypoint.sh /entrypoint.sh", "-post", "/usr/bin/exitpoint.sh"]
